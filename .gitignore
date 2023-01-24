@@ -5,6 +5,8 @@
 /.pnp
 .pnp.js
 
+/karaoke-client/README.md
+
 # testing
 /coverage
 
