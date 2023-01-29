@@ -2,9 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {
     Box,
     Button,
-    Modal, TextField,
     Tooltip,
-    Typography,
     useTheme
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
@@ -13,12 +11,12 @@ import Header from "../../components/Header";
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import FormManageUser from "../../components/FormManageUser";
 // import PropTypes from 'prop-types';
 
 Employees.propTypes = {
 
 };
-
 
 function Employees(props) {
     useEffect(() => {
@@ -27,7 +25,11 @@ function Employees(props) {
 
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
-    const [modal, setModal] = useState(false);
+    const [statusModal, setStatusModal] = useState({
+        modal: false,
+        isEditForm: false,
+    });
+
     const columns = [
         { field: "id", headerName: "ID", width: 50 },
         {
@@ -37,22 +39,23 @@ function Employees(props) {
             cellClassName: 'name-column--cell',
             headerAlign: "left",
             align: "left",
+            sortable: false,
         },
         {
             field: 'birthDay',
             headerName: 'Ngày sinh',
-            // flex: 1,
             width: 100,
             headerAlign: "left",
             align: "left",
+            sortable: false,
         },
         {
             field: 'phone',
             headerName: 'Số điện thoại',
-            // flex: 1,
             width: 100,
             headerAlign: "left",
             align: "left",
+            sortable: false,
         },
         {
             field: "email",
@@ -60,6 +63,7 @@ function Employees(props) {
             flex: 1,
             headerAlign: "left",
             align: "left",
+            sortable: false,
         },
         {
             field: "role",
@@ -68,6 +72,7 @@ function Employees(props) {
             width: 100,
             headerAlign: "left",
             align: "left",
+            sortable: false,
         },
         {
             field: "address",
@@ -76,6 +81,7 @@ function Employees(props) {
             headerAlign: "left",
             align: "left",
             width: "auto",
+            sortable: false,
         },
         {
             field: "shiftCount",
@@ -89,9 +95,9 @@ function Employees(props) {
         {
             field: 'chucnang',
             headerName: 'Thao tác',
-            // flex: 1,
             width: 200,
-            renderCell: ({ row: { chucnang }}) => {
+            sortable: false,
+            renderCell: ({row}) => {
                 return (
                     <Box
                         sx={{
@@ -102,21 +108,6 @@ function Employees(props) {
                             justifyContent: "center",
                         }}
                     >
-                        {/*<Tooltip title={'Thêm mới nhân viên'} arrow={true}>*/}
-                        {/*    <Button*/}
-                        {/*        variant={'outlined'}*/}
-                        {/*        style={{*/}
-                        {/*            margin: "5px",*/}
-                        {/*            backgroundColor: colors.greenAccent[500],*/}
-                        {/*            width: 50,*/}
-                        {/*        }}*/}
-                        {/*        onClick={() => {*/}
-                        {/*            console.log('Add')*/}
-                        {/*        }}*/}
-                        {/*    >*/}
-                        {/*        <AddCircleOutlineOutlinedIcon/>*/}
-                        {/*    </Button>*/}
-                        {/*</Tooltip>*/}
                         <Tooltip title={'Cập nhật thông tin nhân viên'} arrow={true}>
                             <Button
                                 variant={'outlined'}
@@ -124,6 +115,14 @@ function Employees(props) {
                                     margin: "5px",
                                     backgroundColor: colors.blueAccent[500],
                                     width: 50,
+                                }}
+                                onClick={() => {
+                                    setStatusModal({
+                                        modal: true,
+                                        isEditForm: true,
+                                    });
+
+                                    // console.log(`modal: ${statusModal.modal}, edit form: ${statusModal.isEditForm}`);
                                 }}
                             >
                                 <EditOutlinedIcon/>
@@ -148,11 +147,21 @@ function Employees(props) {
     ];
 
     const openAddModal = () => {
-        setModal(true);
+        setStatusModal({
+            modal: true,
+            isEditForm: false,
+        });
+
+        // console.log(`modal: ${statusModal.modal}, edit form: ${statusModal.isEditForm}`);
     };
 
     const closeAddModal = () => {
-        setModal(false);
+        setStatusModal({
+            isEditForm: false,
+            modal: false,
+        });
+
+        // console.log(`modal: ${statusModal.modal}, edit form: ${statusModal.isEditForm}`);
     }
 
     const userList = [
@@ -308,11 +317,6 @@ function Employees(props) {
         },
     ];
 
-    const handleFormSubmit = (event) => {
-        event.preventDefault();
-        console.log(event.target.name.value);
-    };
-
     return (
         <Box sx={{ m: "20px" }}>
             <Header title="QUẢN LÝ NHÂN VIÊN" subtitle="Quản lý thông tin của các nhân viên trong cửa hàng" />
@@ -362,97 +366,9 @@ function Employees(props) {
                     </Button>
                 </Tooltip>
 
-                <Modal
-                    open={modal}
-                    aria-labelledby="modal-modal-title"
-                    // aria-describedby="modal-modal-description"
-                >
-                    <Box
-                        sx={{
-                            position: 'absolute',
-                            top: '50%',
-                            left: '50%',
-                            transform: 'translate(-50%, -50%)',
-                            width: 600,
-                            backgroundColor: colors.primary[400],
-                            border: '1px solid #000',
-                            boxShadow: 24,
-                            p: 4,
-                            borderRadius: "5px",
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            flexDirection: 'column',
-                        }}
-                    >
-                        <Typography
-                            style={{
-                                marginBottom: "10px",
-                                color: colors.grey[100],
-                            }}
-                            id="modal-modal-title" variant="h6" component="h2">
-                            Thêm nhân viên
-                        </Typography>
-
-                        <TextField
-                            variant={'filled'}
-                            required={true}
-                            id="input-name"
-                            label={'Họ và tên'}
-                            style={{
-                                color: 'white',
-                                width: "400px",
-                                marginBottom: "10px",
-                                outlineColor: colors.grey[100],
-                            }}
-                        ></TextField>
-
-                        <div
-                            style={{
-                                marginBottom: '10px',
-                                display: 'flex',
-                                justifyContent: 'space-around',
-                                alignItems: 'center',
-                                flexDirection: 'row',
-                                width: "400px",
-                            }}
-                        >
-                            <Button
-                                type={'submit'}
-                                style={{
-                                    backgroundColor: colors.greenAccent[300],
-                                    color: colors.primary[600],
-                                    fontWeight: 'bold',
-                                }}
-                                onClick={handleFormSubmit}
-                            >Lưu thông tin</Button>
-                            <Button
-                                type={'submit'}
-                                style={{
-                                    backgroundColor: colors.redAccent[300],
-                                    color: colors.primary[600],
-                                    fontWeight: 'bold',
-                                }}
-                                onClick={closeAddModal}
-                            >Hủy thao tác</Button>
-                        </div>
-                    </Box>
-                </Modal>
+                <FormManageUser modal={statusModal.modal} closeModal={closeAddModal} isEditForm={statusModal.isEditForm}/>
 
                 <DataGrid rows={userList} columns={columns}/>
-
-                <TextField
-                    variant={'filled'}
-                    required={true}
-                    label={'Họ và tên'}
-                    style={{
-                        color: 'red',
-                        width: "400px",
-                        marginBottom: "10px",
-                        outlineColor: colors.grey[100],
-                        marginTop: "10px"
-                    }}
-                ></TextField>
             </Box>
         </Box>
     );
