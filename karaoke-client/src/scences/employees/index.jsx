@@ -12,6 +12,7 @@ import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOu
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import FormManageUser from "../../components/FormManageUser";
+import dayjs from "dayjs";
 // import PropTypes from 'prop-types';
 
 Employees.propTypes = {
@@ -19,16 +20,225 @@ Employees.propTypes = {
 };
 
 function Employees(props) {
-    useEffect(() => {
-        document.title = 'Quản lý nhân viên'
-    }, []);
+    let userList = [
+        {
+            id: 1,
+            name: 'Trương Xuân Vương',
+            birthDay: '21/05/2002',
+            phone: '0393320811',
+            email: 'vuong@gmail.com',
+            role: 'Quản lý',
+            address: 'Quận 5, Thành phố Hồ Chí Minh',
+            shiftCount: 15,
+            gender: 'Nam',
+            username: 'xuanvuong',
+            password: '123',
+        },
+        {
+            id: 2,
+            name: 'Bùi Đoàn Khánh Ân',
+            birthDay: '01/01/2002',
+            phone: '0393172931',
+            email: 'khanhan@gmail.com',
+            role: 'Kế toán',
+            address: 'Quận Bình Tân, Thành phố Hồ Chí Minh',
+            shiftCount: 7,
+            gender: 'Nam',
+            username: 'khanhan',
+            password: '321',
+        },
+        {
+            id: 3,
+            name: 'Nguyễn Đông Anh',
+            birthDay: '12/03/2002',
+            phone: '0336112231',
+            email: 'donganh123@gmail.com',
+            role: 'Kỹ thuật',
+            address: 'Thành phố Thủ Đức, Thành phố Hồ Chí Minh',
+            shiftCount: 10,
+            gender: 'Nam',
+            username: 'donganh',
+            password: '456',
+        },
+        {
+            id: 4,
+            name: 'Trần Nam Đô',
+            birthDay: '17/02/2002',
+            phone: '03367946131',
+            email: 'namdo1241@gmail.com',
+            role: 'Phục vụ',
+            address: 'Quận 7, Thành phố Hồ Chí Minh',
+            shiftCount: 4,
+            gender: 'Nam',
+            username: '',
+            password: '',
+        },
+        {
+            id: 5,
+            name: 'Trần Linh Nhi',
+            birthDay: '17/02/2002',
+            phone: '03367946131',
+            email: 'namdo1241@gmail.com',
+            role: 'Phục vụ',
+            address: 'Quận 7, Thành phố Hồ Chí Minh',
+            shiftCount: 4,
+            gender: 'Nữ',
+            username: '',
+            password: '',
+        },
+        {
+            id: 6,
+            name: 'Trần Nam Đô',
+            birthDay: '17/02/2002',
+            phone: '03367946131',
+            email: 'namdo1241@gmail.com',
+            role: 'Phục vụ',
+            address: 'Quận 7, Thành phố Hồ Chí Minh',
+            shiftCount: 4,
+            gender: 'Nam',
+            username: '',
+            password: '',
+        },
+        {
+            id: 7,
+            name: 'Trần Nam Đô',
+            birthDay: '17/02/2002',
+            phone: '03367946131',
+            email: 'namdo1241@gmail.com',
+            role: 'Phục vụ',
+            address: 'Quận 7, Thành phố Hồ Chí Minh',
+            shiftCount: 4,
+            gender: 'Nam',
+            username: '',
+            password: '',
+        },
+        {
+            id: 8,
+            name: 'Trần Nam Đô',
+            birthDay: '17/02/2002',
+            phone: '03367946131',
+            email: 'namdo1241@gmail.com',
+            role: 'Phục vụ',
+            address: 'Quận 7, Thành phố Hồ Chí Minh',
+            shiftCount: 4,
+            gender: 'Nam',
+            username: '',
+            password: '',
+        },
+        {
+            id: 9,
+            name: 'Trần Nam Đô',
+            birthDay: '17/02/2002',
+            phone: '03367946131',
+            email: 'namdo1241@gmail.com',
+            role: 'Phục vụ',
+            address: 'Quận 7, Thành phố Hồ Chí Minh',
+            shiftCount: 4,
+            gender: 'Nam',
+            username: '',
+            password: '',
+        },
+        {
+            id: 10,
+            name: 'Trần Nam Đô',
+            birthDay: '17/02/2002',
+            phone: '03367946131',
+            email: 'namdo1241@gmail.com',
+            role: 'Phục vụ',
+            address: 'Quận 7, Thành phố Hồ Chí Minh',
+            shiftCount: 4,
+            gender: 'Nam',
+            username: '',
+            password: '',
+        },
+        {
+            id: 11,
+            name: 'Trần Nam Đô',
+            birthDay: '17/02/2002',
+            phone: '03367946131',
+            email: 'namdo1241@gmail.com',
+            role: 'Phục vụ',
+            address: 'Quận 7, Thành phố Hồ Chí Minh',
+            shiftCount: 4,
+            gender: 'Nam',
+            username: '',
+            password: '',
+        },
+        {
+            id: 12,
+            name: 'Trần Nam Đô',
+            birthDay: '17/02/2002',
+            phone: '03367946131',
+            email: 'namdo1241@gmail.com',
+            role: 'Phục vụ',
+            address: 'Quận 7, Thành phố Hồ Chí Minh',
+            shiftCount: 4,
+            gender: 'Nam',
+            username: '',
+            password: '',
+        },
+        {
+            id: 13,
+            name: 'Trần Nam Đô',
+            birthDay: '17/02/2002',
+            phone: '03367946131',
+            email: 'namdo1241@gmail.com',
+            role: 'Phục vụ',
+            address: 'Quận 7, Thành phố Hồ Chí Minh',
+            shiftCount: 4,
+            gender: 'Nam',
+            username: '',
+            password: '',
+        },
+        {
+            id: 14,
+            name: 'Trần Nam Đô',
+            birthDay: '17/02/2002',
+            phone: '03367946131',
+            email: 'namdo1241@gmail.com',
+            role: 'Phục vụ',
+            address: 'Quận 7, Thành phố Hồ Chí Minh',
+            shiftCount: 4,
+            gender: 'Nam',
+            username: '',
+            password: '',
+        },
+        {
+            id: 15,
+            name: 'Trần Nam Đô',
+            birthDay: '17/02/2002',
+            phone: '03367946131',
+            email: 'namdo1241@gmail.com',
+            role: 'Phục vụ',
+            address: 'Quận 7, Thành phố Hồ Chí Minh',
+            shiftCount: 4,
+            gender: 'Nam',
+            username: '',
+            password: '',
+        },
+    ];
 
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [statusModal, setStatusModal] = useState({
         modal: false,
         isEditForm: false,
+        selectedRow: {},
     });
+
+    const [users, setUsers] = useState(userList);
+
+    useEffect(() => {
+        document.title = 'Quản lý nhân viên'
+    }, [users]);
+
+    const handleDeleteClick = (row) => {
+        const newUserList = users.filter((u) => {
+            return u.id !== row.id;
+        });
+        setUsers([...newUserList]);
+        // console.log(users)
+    };
 
     const columns = [
         { field: "id", headerName: "ID", width: 50 },
@@ -117,11 +327,17 @@ function Employees(props) {
                                     width: 50,
                                 }}
                                 onClick={() => {
+                                    const temp = row.birthDay.toString().split('/');
+                                    temp.reverse();
+
                                     setStatusModal({
                                         modal: true,
                                         isEditForm: true,
+                                        selectedRow: {
+                                            ...row,
+                                            birthDay: dayjs(temp.join('-')),
+                                        },
                                     });
-
                                     // console.log(`modal: ${statusModal.modal}, edit form: ${statusModal.isEditForm}`);
                                 }}
                             >
@@ -136,6 +352,7 @@ function Employees(props) {
                                     backgroundColor: colors.redAccent[500],
                                     width: 50,
                                 }}
+                                onClick={() => handleDeleteClick(row)}
                             >
                                 <DeleteForeverOutlinedIcon/>
                             </Button>
@@ -150,6 +367,7 @@ function Employees(props) {
         setStatusModal({
             modal: true,
             isEditForm: false,
+            selectedRow: {},
         });
 
         // console.log(`modal: ${statusModal.modal}, edit form: ${statusModal.isEditForm}`);
@@ -159,163 +377,11 @@ function Employees(props) {
         setStatusModal({
             isEditForm: false,
             modal: false,
+            selectedRow: {},
         });
 
         // console.log(`modal: ${statusModal.modal}, edit form: ${statusModal.isEditForm}`);
     }
-
-    const userList = [
-        {
-            id: 1,
-            name: 'Trương Xuân Vương',
-            birthDay: '21/05/2002',
-            phone: '0393320811',
-            email: 'vuong@gmail.com',
-            role: 'Quản lý',
-            address: 'Quận 5, Thành phố Hồ Chí Minh',
-            shiftCount: 15,
-        },
-        {
-            id: 2,
-            name: 'Bùi Đoàn Khánh Ân',
-            birthDay: '01/01/2002',
-            phone: '0393172931',
-            email: 'khanhan@gmail.com',
-            role: 'Kế toán',
-            address: 'Quận Bình Tân, Thành phố Hồ Chí Minh',
-            shiftCount: 7,
-        },
-        {
-            id: 3,
-            name: 'Nguyễn Đông Anh',
-            birthDay: '12/03/2002',
-            phone: '0336112231',
-            email: 'donganh123@gmail.com',
-            role: 'Kỹ thuật',
-            address: 'Thành phố Thủ Đức, Thành phố Hồ Chí Minh',
-            shiftCount: 10,
-        },
-        {
-            id: 4,
-            name: 'Trần Nam Đô',
-            birthDay: '17/02/2002',
-            phone: '03367946131',
-            email: 'namdo1241@gmail.com',
-            role: 'Phục vụ',
-            address: 'Quận 7, Thành phố Hồ Chí Minh',
-            shiftCount: 4,
-        },
-        {
-            id: 5,
-            name: 'Trần Nam Đô',
-            birthDay: '17/02/2002',
-            phone: '03367946131',
-            email: 'namdo1241@gmail.com',
-            role: 'Phục vụ',
-            address: 'Quận 7, Thành phố Hồ Chí Minh',
-            shiftCount: 4,
-        },
-        {
-            id: 6,
-            name: 'Trần Nam Đô',
-            birthDay: '17/02/2002',
-            phone: '03367946131',
-            email: 'namdo1241@gmail.com',
-            role: 'Phục vụ',
-            address: 'Quận 7, Thành phố Hồ Chí Minh',
-            shiftCount: 4,
-        },
-        {
-            id: 7,
-            name: 'Trần Nam Đô',
-            birthDay: '17/02/2002',
-            phone: '03367946131',
-            email: 'namdo1241@gmail.com',
-            role: 'Phục vụ',
-            address: 'Quận 7, Thành phố Hồ Chí Minh',
-            shiftCount: 4,
-        },
-        {
-            id: 8,
-            name: 'Trần Nam Đô',
-            birthDay: '17/02/2002',
-            phone: '03367946131',
-            email: 'namdo1241@gmail.com',
-            role: 'Phục vụ',
-            address: 'Quận 7, Thành phố Hồ Chí Minh',
-            shiftCount: 4,
-        },
-        {
-            id: 9,
-            name: 'Trần Nam Đô',
-            birthDay: '17/02/2002',
-            phone: '03367946131',
-            email: 'namdo1241@gmail.com',
-            role: 'Phục vụ',
-            address: 'Quận 7, Thành phố Hồ Chí Minh',
-            shiftCount: 4,
-        },
-        {
-            id: 10,
-            name: 'Trần Nam Đô',
-            birthDay: '17/02/2002',
-            phone: '03367946131',
-            email: 'namdo1241@gmail.com',
-            role: 'Phục vụ',
-            address: 'Quận 7, Thành phố Hồ Chí Minh',
-            shiftCount: 4,
-        },
-        {
-            id: 11,
-            name: 'Trần Nam Đô',
-            birthDay: '17/02/2002',
-            phone: '03367946131',
-            email: 'namdo1241@gmail.com',
-            role: 'Phục vụ',
-            address: 'Quận 7, Thành phố Hồ Chí Minh',
-            shiftCount: 4,
-        },
-        {
-            id: 12,
-            name: 'Trần Nam Đô',
-            birthDay: '17/02/2002',
-            phone: '03367946131',
-            email: 'namdo1241@gmail.com',
-            role: 'Phục vụ',
-            address: 'Quận 7, Thành phố Hồ Chí Minh',
-            shiftCount: 4,
-        },
-        {
-            id: 13,
-            name: 'Trần Nam Đô',
-            birthDay: '17/02/2002',
-            phone: '03367946131',
-            email: 'namdo1241@gmail.com',
-            role: 'Phục vụ',
-            address: 'Quận 7, Thành phố Hồ Chí Minh',
-            shiftCount: 4,
-        },
-        {
-            id: 14,
-            name: 'Trần Nam Đô',
-            birthDay: '17/02/2002',
-            phone: '03367946131',
-            email: 'namdo1241@gmail.com',
-            role: 'Phục vụ',
-            address: 'Quận 7, Thành phố Hồ Chí Minh',
-            shiftCount: 4,
-        },
-        {
-            id: 15,
-            name: 'Trần Nam Đô',
-            birthDay: '17/02/2002',
-            phone: '03367946131',
-            email: 'namdo1241@gmail.com',
-            role: 'Phục vụ',
-            address: 'Quận 7, Thành phố Hồ Chí Minh',
-            shiftCount: 4,
-        },
-    ];
 
     return (
         <Box sx={{ m: "20px" }}>
@@ -366,9 +432,9 @@ function Employees(props) {
                     </Button>
                 </Tooltip>
 
-                <FormManageUser modal={statusModal.modal} closeModal={closeAddModal} isEditForm={statusModal.isEditForm}/>
+                <FormManageUser dataUser={statusModal.selectedRow} modal={statusModal.modal} closeModal={closeAddModal} isEditForm={statusModal.isEditForm}/>
 
-                <DataGrid rows={userList} columns={columns}/>
+                <DataGrid rows={users} columns={columns}/>
             </Box>
         </Box>
     );

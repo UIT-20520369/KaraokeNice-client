@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {
     Autocomplete,
@@ -19,16 +19,18 @@ FormManageUser.propTypes = {
     modal: PropTypes.bool,
     closeModal: PropTypes.func,
     isEditForm: PropTypes.bool,
+    dataUser: PropTypes.object,
 };
 
 FormManageUser.defaultProps = {
     modal: false,
     closeModal: null,
     isEditForm: false,
+    dataUser: {},
 }
 
 function FormManageUser(props) {
-    const { modal, closeModal, isEditForm } = props;
+    const { modal, closeModal, isEditForm, dataUser } = props;
 
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
@@ -36,7 +38,7 @@ function FormManageUser(props) {
     const currentDate = new Date();
     const dateTime = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`;
 
-    console.log(`in edit form: modal: ${modal}, edit form: ${isEditForm}`);
+    // console.log(`in edit form: modal: ${modal}, edit form: ${isEditForm}`);
 
     const roleList = [
         'Quản lý',
@@ -47,16 +49,16 @@ function FormManageUser(props) {
     ]
 
     const initialValue = isEditForm ? {
-        name: "Xuan Vuong",
-        phone: "0393320811",
-        email: "xuanvuong21@gmail.com",
-        birthDay: dayjs(dateTime),
-        gender: "Nam",
-        address: "Ninh Thuan",
-        role: "Quan ly",
-        username: "a",
-        password: "b",
-        hasAccount: true,
+        name: dataUser.name,
+        phone: dataUser.phone,
+        email: dataUser.email,
+        birthDay: dataUser.birthDay,
+        gender: dataUser.gender,
+        address: dataUser.address,
+        role: dataUser.role,
+        username: dataUser.username,
+        password: dataUser.password,
+        hasAccount: dataUser.hasAccount,
     } : {
         name: "",
         phone: "",
@@ -70,9 +72,32 @@ function FormManageUser(props) {
         hasAccount: true,
     };
 
-    const [user, setUser] = useState(initialValue);
+    const [user, setUser] = useState({
+        name: "",
+        phone: "",
+        email: "",
+        birthDay: dayjs(dateTime),
+        gender: "Nam",
+        address: "",
+        role: "",
+        username: "",
+        password: "",
+        hasAccount: true,
+    });
 
-    console.log(user)
+
+    useEffect(() => {
+        if (dataUser.role === roleList[0] || dataUser.role === roleList[1] || dataUser.role === roleList[2])
+            setUser({
+                ...initialValue,
+                hasAccount: true,
+            });
+        else
+            setUser({
+                ...initialValue,
+                hasAccount: false,
+            });
+    }, [isEditForm]);
 
     const styleTextField = {
         '& label.Mui-focused': {
@@ -112,7 +137,7 @@ function FormManageUser(props) {
 
     const handleFormSubmit = (event) => {
         event.preventDefault();
-        console.log(`${user.name}; ${user.phone}; ${user.email}; ${user.birthDay.format('DD-MM-YYYY')}; ${user.address}; ${user.gender}; ${user.role}; ${user.username}; ${user.password}`);
+        console.log(`${user.name}; ${user.phone}; ${user.birthDay.format('DD-MM-YYYY')} ${user.email}; ${user.address}; ${user.gender}; ${user.role}; ${user.username}; ${user.password}`);
     };
 
     return (
@@ -219,8 +244,8 @@ function FormManageUser(props) {
                         <TextField sx={styleTextField} {...params} label={'Chức vụ'}/>
                     )}
                     options={ roleList }
-                    defaultValue={ roleList[0] }
-                    inputValue={user.role}
+                    defaultValue={ dataUser.role ? dataUser.role : roleList[0] }
+                    inputValue={ user.role }
                     onInputChange={(event, newRoleChange) => {
                         if (newRoleChange === roleList[0] || newRoleChange === roleList[1] || newRoleChange === roleList[2])
                             setUser(prevState => ({

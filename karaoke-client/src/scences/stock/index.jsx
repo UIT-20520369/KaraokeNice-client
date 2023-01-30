@@ -1,7 +1,12 @@
 import React, {useEffect} from 'react';
-import { Box, useTheme } from "@mui/material";
+import {Box, Button, Tooltip, useTheme} from "@mui/material";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import {DataGrid} from "@mui/x-data-grid";
+import dayjs from "dayjs";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 // import PropTypes from 'prop-types';
 
 Stock.propTypes = {
@@ -16,16 +21,211 @@ function Stock(props) {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
+    const typeList = [
+        'Đồ uống',
+        'Đồ ăn',
+    ]
+
+    const goodList = [
+        {
+            id: 1,
+            nameGood: 'Bia Sài Gòn',
+            nameType: 'Đồ uống',
+            quantity: 2,
+            importPrice: '15000',
+            salePrice: '17000',
+            unit: 'lon',
+        },
+        {
+            id: 2,
+            nameGood: 'Snack',
+            nameType: 'Đồ ăn',
+            quantity: 4,
+            importPrice: '10000',
+            salePrice: '12000',
+            unit: 'gói',
+        },
+        {
+            id: 3,
+            nameGood: 'Bia Tiger',
+            nameType: 'Đồ uống',
+            quantity: 5,
+            importPrice: '15000',
+            salePrice: '17000',
+            unit: 'lon',
+        },
+        {
+            id: 4,
+            nameGood: 'Đậu phộng',
+            nameType: 'Đồ ăn',
+            quantity: 1,
+            importPrice: '21000',
+            salePrice: '22500',
+            unit: 'hộp',
+        },
+    ];
+
+    const columns = [
+        { field: "id", headerName: "ID", width: 50 },
+        {
+            field: "nameGood",
+            headerName: "Tên hàng hóa",
+            flex: 1,
+            headerAlign: "left",
+            align: "left",
+            sortable: false,
+            cellClassName: 'name-column--cell',
+        },
+        {
+            field: "nameType",
+            headerName: "Tên loại hàng",
+            flex: 1,
+            headerAlign: "left",
+            align: "left",
+            sortable: false,
+        },
+        {
+            field: 'quantity',
+            headerName: 'Số lượng',
+            // width: 100,
+            flex: 1,
+            headerAlign: 'left',
+            align: 'left',
+            sortable: false,
+        },
+        {
+            field: 'importPrice',
+            headerAlign: "left",
+            headerName: 'Giá nhập',
+            align: 'left',
+            flex: 1,
+        },
+        {
+            field: 'salePrice',
+            headerAlign: "left",
+            headerName: 'Giá bán',
+            align: 'left',
+            flex: 1,
+        },
+        {
+            field: 'unit',
+            headerAlign: "left",
+            headerName: 'Đơn vị',
+            align: 'left',
+            flex: 1,
+        },
+        {
+            field: 'action',
+            headerName: 'Thao tác',
+            sortable: false,
+            flex: 1,
+            renderCell: ({row}) => {
+                return (
+                    <Box
+                        sx={{
+                            width: "60%",
+                            m: "0 auto",
+                            p: "5px",
+                            display: "flex",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <Tooltip title={'Cập nhật thông tin hàng hóa'} arrow={true}>
+                            <Button
+                                variant={'outlined'}
+                                style={{
+                                    margin: "5px",
+                                    backgroundColor: colors.blueAccent[500],
+                                    width: 50,
+                                }}
+                                // onClick={() => {
+                                //     const temp = row.birthDay.toString().split('/');
+                                //     temp.reverse();
+                                //
+                                //     setStatusModal({
+                                //         modal: true,
+                                //         isEditForm: true,
+                                //         selectedRow: {
+                                //             ...row,
+                                //             birthDay: dayjs(temp.join('-')),
+                                //         },
+                                //     });
+                                //     // console.log(`modal: ${statusModal.modal}, edit form: ${statusModal.isEditForm}`);
+                                // }}
+                            >
+                                <EditOutlinedIcon/>
+                            </Button>
+                        </Tooltip>
+                        <Tooltip title={'Xóa hàng'} arrow={true}>
+                            <Button
+                                variant={'outlined'}
+                                style={{
+                                    margin: "5px",
+                                    backgroundColor: colors.redAccent[500],
+                                    width: 50,
+                                }}
+                                // onClick={() => handleDeleteClick(row)}
+                            >
+                                <DeleteForeverOutlinedIcon/>
+                            </Button>
+                        </Tooltip>
+                    </Box>
+                );
+            }
+        }
+    ];
+
     return (
         <Box sx={{ m: "20px" }}>
-            {/* HEADER */}
-            <Box sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-            }}>
-                <Header title="QUẢN LÝ KHO HÀNG" subtitle="Quản lý các hàng hóa trong kho của cửa hàng" />
+            <Header title="QUẢN LÝ KHO HÀNG" subtitle="Quản lý các hàng hóa trong kho của cửa hàng" />
 
+            <Box sx={{
+                "& .MuiDataGrid-root": {
+                    border: "none",
+                },
+                "& .MuiDataGrid-cell": {
+                    borderBottom: "none",
+                },
+                "& .name-column--cell": {
+                    color: colors.greenAccent[300],
+                },
+                "& .MuiDataGrid-columnHeaders": {
+                    backgroundColor: colors.blueAccent[700],
+                    borderBottom: "none",
+                },
+                "& .MuiDataGrid-virtualScroller": {
+                    backgroundColor: colors.primary[400],
+                },
+                "& .MuiDataGrid-footerContainer": {
+                    borderTop: "none",
+                    backgroundColor: colors.blueAccent[700],
+                },
+                "& .MuiCheckbox-root": {
+                    color: `${colors.greenAccent[200]} !important`,
+                },
+                m: "40px 0 0 0",
+                height: "75vh",
+            }}
+            >
+                <Tooltip title={'Thêm mới hàng hóa'} arrow={true}>
+                    <Button
+                        variant={'outlined'}
+                        style={{
+                            margin: "0 0 20px 0",
+                            backgroundColor: colors.greenAccent[500],
+                            width: 250,
+                            fontWeight: "bold",
+                            height: 50,
+                            fontSize: "16px",
+                        }}
+                        // onClick={openAddModal}
+                    >
+                        Thêm hàng hóa
+                        <AddCircleOutlineOutlinedIcon style={{ marginLeft: "10px", fontSize: "32px" }}/>
+                    </Button>
+                </Tooltip>
+
+                <DataGrid columns={columns} rows={goodList}/>
             </Box>
         </Box>
     );
