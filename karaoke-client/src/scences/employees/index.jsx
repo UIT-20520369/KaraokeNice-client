@@ -360,7 +360,7 @@ function Employees(props) {
                     </Box>
                 );
             }
-        }
+        },
     ];
 
     const openAddModal = () => {

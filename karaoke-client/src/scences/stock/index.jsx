@@ -1,12 +1,12 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, Button, Tooltip, useTheme} from "@mui/material";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import {DataGrid} from "@mui/x-data-grid";
-import dayjs from "dayjs";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
+import FormManageGood from "../../components/FormManageGood";
 // import PropTypes from 'prop-types';
 
 Stock.propTypes = {
@@ -14,19 +14,16 @@ Stock.propTypes = {
 };
 
 function Stock(props) {
-    useEffect(() => {
-        document.title = 'Quản lý kho'
-    }, []);
-
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
-    const typeList = [
-        'Đồ uống',
-        'Đồ ăn',
-    ]
+    const [statusModal, setStatusModal] = useState({
+        modal: false,
+        isEditForm: false,
+        selectedRow: {},
+    });
 
-    const goodList = [
+    const initialList = [
         {
             id: 1,
             nameGood: 'Bia Sài Gòn',
@@ -64,6 +61,19 @@ function Stock(props) {
             unit: 'hộp',
         },
     ];
+
+    const [goodList, setGoodList] = useState(initialList);
+
+    useEffect(() => {
+        document.title = 'Quản lý kho'
+    }, [goodList]);
+
+    const handleDeleteClick = (row) => {
+        const newGoodList = goodList.filter((u) => {
+            return u.id !== row.id;
+        });
+        setGoodList([...newGoodList]);
+    };
 
     const columns = [
         { field: "id", headerName: "ID", width: 50 },
@@ -138,20 +148,14 @@ function Stock(props) {
                                     backgroundColor: colors.blueAccent[500],
                                     width: 50,
                                 }}
-                                // onClick={() => {
-                                //     const temp = row.birthDay.toString().split('/');
-                                //     temp.reverse();
-                                //
-                                //     setStatusModal({
-                                //         modal: true,
-                                //         isEditForm: true,
-                                //         selectedRow: {
-                                //             ...row,
-                                //             birthDay: dayjs(temp.join('-')),
-                                //         },
-                                //     });
-                                //     // console.log(`modal: ${statusModal.modal}, edit form: ${statusModal.isEditForm}`);
-                                // }}
+                                onClick={() => {
+                                    setStatusModal({
+                                        modal: true,
+                                        isEditForm: true,
+                                        selectedRow: row,
+                                    });
+                                    // console.log(`modal: ${statusModal.modal}, edit form: ${statusModal.isEditForm}`);
+                                }}
                             >
                                 <EditOutlinedIcon/>
                             </Button>
@@ -164,7 +168,7 @@ function Stock(props) {
                                     backgroundColor: colors.redAccent[500],
                                     width: 50,
                                 }}
-                                // onClick={() => handleDeleteClick(row)}
+                                onClick={() => handleDeleteClick(row)}
                             >
                                 <DeleteForeverOutlinedIcon/>
                             </Button>
@@ -174,6 +178,22 @@ function Stock(props) {
             }
         }
     ];
+
+    const openAddModal = () => {
+        setStatusModal({
+            modal: true,
+            isEditForm: false,
+            selectedRow: {},
+        });
+    }
+
+    const closeModal = () => {
+        setStatusModal({
+            modal: false,
+            isEditForm: false,
+            selectedRow: {},
+        });
+    }
 
     return (
         <Box sx={{ m: "20px" }}>
@@ -218,12 +238,19 @@ function Stock(props) {
                             height: 50,
                             fontSize: "16px",
                         }}
-                        // onClick={openAddModal}
+                        onClick={openAddModal}
                     >
                         Thêm hàng hóa
                         <AddCircleOutlineOutlinedIcon style={{ marginLeft: "10px", fontSize: "32px" }}/>
                     </Button>
                 </Tooltip>
+
+                <FormManageGood
+                    selectedRow={statusModal.selectedRow}
+                    isEditForm={statusModal.isEditForm}
+                    closeModal={closeModal}
+                    modal={statusModal.modal}
+                />
 
                 <DataGrid columns={columns} rows={goodList}/>
             </Box>

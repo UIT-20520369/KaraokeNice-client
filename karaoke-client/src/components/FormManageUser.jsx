@@ -49,6 +49,7 @@ function FormManageUser(props) {
     ]
 
     const initialValue = isEditForm ? {
+        id: dataUser.id,
         name: dataUser.name,
         phone: dataUser.phone,
         email: dataUser.email,
@@ -59,7 +60,9 @@ function FormManageUser(props) {
         username: dataUser.username,
         password: dataUser.password,
         hasAccount: dataUser.hasAccount,
+        shiftCount: dataUser.shiftCount,
     } : {
+        id: "",
         name: "",
         phone: "",
         email: "",
@@ -70,9 +73,11 @@ function FormManageUser(props) {
         username: "",
         password: "",
         hasAccount: true,
+        shiftCount: 0,
     };
 
     const [user, setUser] = useState({
+        id: "",
         name: "",
         phone: "",
         email: "",
@@ -83,20 +88,29 @@ function FormManageUser(props) {
         username: "",
         password: "",
         hasAccount: true,
+        shiftCount: 0,
     });
 
 
     useEffect(() => {
-        if (dataUser.role === roleList[0] || dataUser.role === roleList[1] || dataUser.role === roleList[2])
+        if (isEditForm) {
+            if (dataUser.role === roleList[0] || dataUser.role === roleList[1] || dataUser.role === roleList[2])
+                setUser({
+                    ...initialValue,
+                    hasAccount: true,
+                });
+            else
+                setUser({
+                    ...initialValue,
+                    hasAccount: false,
+                });
+        }
+        else {
             setUser({
-                ...initialValue,
-                hasAccount: true,
+               ...initialValue,
             });
-        else
-            setUser({
-                ...initialValue,
-                hasAccount: false,
-            });
+        }
+
     }, [isEditForm]);
 
     const styleTextField = {
@@ -118,7 +132,7 @@ function FormManageUser(props) {
             },
         },
         width: "400px",
-        marginBottom: "15px",
+        marginBottom: "10px",
     };
 
     const handleGenderChange = (event) => {
@@ -137,7 +151,7 @@ function FormManageUser(props) {
 
     const handleFormSubmit = (event) => {
         event.preventDefault();
-        console.log(`${user.name}; ${user.phone}; ${user.birthDay.format('DD-MM-YYYY')} ${user.email}; ${user.address}; ${user.gender}; ${user.role}; ${user.username}; ${user.password}`);
+        console.log(`${user.id}; ${user.name}; ${user.phone}; ${user.shiftCount}; ${user.birthDay.format('DD-MM-YYYY')} ${user.email}; ${user.address}; ${user.gender}; ${user.role}; ${user.username}; ${user.password}`);
     };
 
     return (
@@ -221,6 +235,26 @@ function FormManageUser(props) {
                     }))}
                     value={user.address}
                     sx={styleTextField}
+                ></TextField>
+                <TextField
+                    variant={'outlined'}
+                    required={true}
+                    id="input-shift-count"
+                    label={'Số ca làm'}
+                    onChange={(e) => {
+                        const regex = /^[0-9\b]+$/;
+                        if (e.target.value === "" || regex.test(e.target.value)) {
+                            setUser(prevState => ({
+                                ...prevState,
+                                shiftCount: e.target.value,
+                            }));
+                        }
+                    }}
+                    value={user.shiftCount}
+                    sx={styleTextField}
+                    inputProps={{
+                        maxLength: 2,
+                    }}
                 ></TextField>
 
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
